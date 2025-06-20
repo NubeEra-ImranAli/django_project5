@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PDF with Header and Footer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+  <button onclick="generatePDF()">Download PDF</button>
+
+  <script>
+    async function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+
+      // 🖼️ Load image (replace with your own base64 or use a CORS-safe URL)
+      const imgUrl = 'https://via.placeholder.com/60'; // sample placeholder image
+      const image = await loadImage(imgUrl);
+      
+      const header = (data) => {
+        // Add image to top left
+        doc.addImage(image, 'PNG', 14, 10, 30, 20); // x, y, width, height
+
+        // Add right-aligned text
+        doc.setFontSize(12);
+        doc.text("Serial No : 12345", 60, 15);
+        doc.text("Test Report", 120, 15);
+        doc.text("Date Time : 07-04-2025", 160, 15);
+      };
+
+      const footer = (data) => {
+        const pageStr = `Page ${data.pageNumber}`;
+        const footerText = "Approved By: Ahmed Khan       Tester Name1: Naveen Kumar       Tester Name2: Sabeel Sab";
+
+        doc.setFontSize(10);
+        doc.setTextColor(50);
+        doc.text(footerText, 14, pageHeight - 10);
+        doc.text(pageStr, pageWidth - 30, pageHeight - 10);
+      };
+
+      // Example table
+      doc.autoTable({
+        head: [['DI_Ch', 'LowValue', 'Status', 'High_Value', 'Status']],
+        body: [
+          ['DI1', '0', 'Pass', '1', 'Pass'],
+          ['DI2', '0', 'Pass', '1', 'Pass'],
+          ['DI3', '0', 'Pass', '1', 'Pass'],
+          ['DI4', '0', 'Pass', '1', 'Pass'],
+          ['DI5', '1', 'Fail', '1', 'Pass']
+        ],
+        startY: 35,
+        theme: 'plain',
+        didDrawPage: function (data) {
+          header(data);
+          footer(data);
+        }
+      });
+
+      doc.save('test_report.pdf');
+    }
+
+    // Helper: Load image and return base64 image for jsPDF
+    function loadImage(url) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          const dataURL = canvas.toDataURL('image/png');
+          resolve(dataURL);
+        };
+        img.src = url;
+      });
+    }
+  </script>
+</body>
+</html>

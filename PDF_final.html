@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PDF Footer Example</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+  <button onclick="generatePDF()">Download PDF</button>
+
+  <script>
+    async function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      let y = 15;
+
+      // Header
+      doc.setFontSize(12);
+      doc.text("Serial No : 12345", 14, y);
+      doc.text("Test Report", 100, y);
+      doc.text("Date Time : 07-04-2025", 160, y);
+      y += 10;
+
+      // Section Title
+      doc.setFontSize(12);
+      doc.text("DI_Card", 14, y);
+      y += 6;
+
+      // Back Plane Power
+      doc.text("Back Plane Power:", 14, y);
+      y += 4;
+
+      doc.autoTable({
+        startY: y,
+        body: [
+          ['+12Volt', '-12Volt', '3.3Volt', '5.5Volt'],
+          ['__________', '__________', '__________', '__________']
+        ],
+        theme: 'plain',
+        styles: { halign: 'left' },
+        didDrawPage: function (data) {
+          const footerText = "Approved By: Ahmed Khan       Tester Name1: Naveen Kumar       Tester Name2: Sabeel Sab";
+          const pageStr = "Page " + doc.internal.getNumberOfPages();
+          doc.setFontSize(10);
+          doc.text(footerText, 14, pageHeight - 10);
+          doc.text(pageStr, pageWidth - 25, pageHeight - 10);
+        }
+      });
+
+      y = doc.lastAutoTable.finalY + 10;
+
+      // PMIC Section
+      doc.text("PMIC & Peripheral Device:", 14, y);
+      y += 4;
+
+      doc.autoTable({
+        startY: y,
+        body: [
+          ['+3.3 Flash', '+4.3 Flash', '+2.3Volt-GND', '+3.3Volt-GND'],
+          ['__________', '__________', '__________', '__________']
+        ],
+        theme: 'plain',
+        styles: { halign: 'left' },
+        didDrawPage: function (data) {
+          const footerText = "Approved By: Ahmed Khan       Tester Name1: Naveen Kumar       Tester Name2: Sabeel Sab";
+          const pageStr = "Page " + doc.internal.getCurrentPageInfo().pageNumber;
+          doc.setFontSize(10);
+          doc.text(footerText, 14, pageHeight - 10);
+          doc.text(pageStr, pageWidth - 25, pageHeight - 10);
+        }
+      });
+
+      y = doc.lastAutoTable.finalY + 10;
+
+      // DI Report Table
+      doc.text("DI_Report(204):", 14, y);
+      y += 4;
+
+      doc.autoTable({
+        startY: y,
+        head: [['DI_Ch', 'LowValue', 'Status', 'High_Value', 'Status']],
+        body: [
+          ['DI1', '0', 'Pass', '1', 'Pass'],
+    ['DI2', '1', 'Fail', '1', 'Pass'],
+    ['DI3', '0', 'Pass', '1', 'Pass'],
+    ['DI4', '1', 'Fail', '1', 'Pass'],
+    ['DI5', '1', 'Pass', '1', 'Pass'],
+    ['DI6', '0', 'Fail', '1', 'Pass'],
+    ['DI7', '1', 'Pass', '1', 'Pass'],
+    ['DI8', '0', 'Pass', '1', 'Pass'],
+    ['DI9', '0', 'Fail', '1', 'Pass'],
+    ['DI10', '1', 'Pass', '1', 'Pass'],
+    ['DI11', '0', 'Fail', '1', 'Pass'],
+    ['DI12', '1', 'Pass', '1', 'Pass'],
+    ['DI13', '1', 'Fail', '1', 'Pass'],
+    ['DI14', '0', 'Pass', '1', 'Pass'],
+    ['DI15', '1', 'Fail', '1', 'Pass'],
+    ['DI16', '0', 'Pass', '1', 'Pass'],
+    ['DI17', '1', 'Pass', '1', 'Pass'],
+    ['DI18', '1', 'Fail', '1', 'Pass'],
+    ['DI19', '0', 'Pass', '1', 'Pass'],
+    ['DI20', '0', 'Fail', '1', 'Pass'],
+    ['DI21', '1', 'Pass', '1', 'Pass'],
+    ['DI22', '0', 'Pass', '1', 'Pass'],
+    ['DI23', '1', 'Fail', '1', 'Pass'],
+    ['DI24', '0', 'Pass', '1', 'Pass'],
+    ['DI25', '1', 'Pass', '1', 'Pass'],
+    ['DI26', '0', 'Fail', '1', 'Pass'],
+    ['DI27', '1', 'Fail', '1', 'Pass'],
+    ['DI28', '0', 'Pass', '1', 'Pass'],
+    ['DI29', '1', 'Fail', '1', 'Pass'],
+    ['DI30', '1', 'Pass', '1', 'Pass'],
+    ['DI31', '0', 'Fail', '1', 'Pass'],
+    ['DI32', '0', 'Pass', '1', 'Pass'],
+    ['DI33', '1', 'Fail', '1', 'Pass'],
+    ['DI34', '1', 'Pass', '1', 'Pass'],
+    ['DI35', '0', 'Fail', '1', 'Pass'],
+    ['DI36', '1', 'Pass', '1', 'Pass'],
+    ['DI37', '0', 'Fail', '1', 'Pass'],
+    ['DI38', '1', 'Pass', '1', 'Pass'],
+    ['DI39', '1', 'Fail', '1', 'Pass'],
+    ['DI40', '0', 'Pass', '1', 'Pass'],
+    ['DI41', '1', 'Fail', '1', 'Pass'],
+    ['DI42', '0', 'Pass', '1', 'Pass'],
+    ['DI43', '1', 'Fail', '1', 'Pass'],
+    ['DI44', '1', 'Pass', '1', 'Pass'],
+    ['DI45', '0', 'Fail', '1', 'Pass'],
+    ['DI46', '1', 'Pass', '1', 'Pass'],
+    ['DI47', '0', 'Fail', '1', 'Pass'],
+    ['DI48', '1', 'Fail', '1', 'Pass'],
+    ['DI49', '1', 'Pass', '1', 'Pass'],
+    ['DI50', '0', 'Fail', '1', 'Pass'],
+    ['DI51', '1', 'Pass', '1', 'Pass'],
+    ['DI52', '0', 'Fail', '1', 'Pass'],
+    ['DI53', '1', 'Fail', '1', 'Pass'],
+    ['DI54', '0', 'Pass', '1', 'Pass'],
+    ['DI55', '1', 'Pass', '1', 'Pass'],
+    ['DI56', '0', 'Fail', '1', 'Pass'],
+    ['DI57', '1', 'Pass', '1', 'Pass'],
+    ['DI58', '1', 'Fail', '1', 'Pass'],
+    ['DI59', '0', 'Pass', '1', 'Pass'],
+    ['DI60', '1', 'Fail', '1', 'Pass'],
+    ['DI61', '1', 'Pass', '1', 'Pass'],
+    ['DI62', '0', 'Fail', '1', 'Pass'],
+    ['DI63', '1', 'Pass', '1', 'Pass'],
+    ['DI64', '1', 'Fail', '1', 'Pass'],
+    ['DI65', '0', 'Pass', '1', 'Pass'],
+    ['DI66', '1', 'Pass', '1', 'Pass'],
+    ['DI67', '0', 'Fail', '1', 'Pass'],
+    ['DI68', '1', 'Pass', '1', 'Pass'],
+    ['DI69', '0', 'Fail', '1', 'Pass'],
+    ['DI70', '1', 'Pass', '1', 'Pass'],
+    ['DI71', '0', 'Fail', '1', 'Pass'],
+    ['DI72', '1', 'Fail', '1', 'Pass'],
+    ['DI73', '0', 'Pass', '1', 'Pass'],
+    ['DI74', '0', 'Fail', '1', 'Pass'],
+    ['DI75', '1', 'Pass', '1', 'Pass'],
+    ['DI76', '0', 'Fail', '1', 'Pass'],
+    ['DI77', '1', 'Pass', '1', 'Pass'],
+    ['DI78', '1', 'Fail', '1', 'Pass'],
+    ['DI79', '0', 'Pass', '1', 'Pass'],
+    ['DI80', '1', 'Fail', '1', 'Pass'],
+    ['DI81', '0', 'Pass', '1', 'Pass'],
+    ['DI82', '1', 'Fail', '1', 'Pass'],
+    ['DI83', '0', 'Pass', '1', 'Pass'],
+    ['DI84', '1', 'Fail', '1', 'Pass'],
+    ['DI85', '1', 'Pass', '1', 'Pass'],
+    ['DI86', '0', 'Fail', '1', 'Pass'],
+    ['DI87', '1', 'Pass', '1', 'Pass'],
+    ['DI88', '0', 'Fail', '1', 'Pass'],
+    ['DI89', '1', 'Pass', '1', 'Pass'],
+    ['DI90', '0', 'Fail', '1', 'Pass'],
+    ['DI91', '1', 'Pass', '1', 'Pass'],
+    ['DI92', '1', 'Fail', '1', 'Pass'],
+    ['DI93', '0', 'Pass', '1', 'Pass'],
+    ['DI94', '0', 'Fail', '1', 'Pass'],
+    ['DI95', '1', 'Pass', '1', 'Pass'],
+    ['DI96', '1', 'Fail', '1', 'Pass'],
+    ['DI97', '0', 'Pass', '1', 'Pass'],
+    ['DI98', '0', 'Fail', '1', 'Pass'],
+    ['DI99', '1', 'Pass', '1', 'Pass'],
+    ['DI100', '0', 'Fail', '1', 'Pass'],
+    ['DI101', '0', 'Fail', '1', 'Pass'],
+    ['DI102', '1', 'Pass', '1', 'Pass'],
+    ['DI103', '0', 'Fail', '1', 'Pass'],
+    ['DI104', '1', 'Pass', '1', 'Pass'],
+    ['DI105', '1', 'Fail', '1', 'Pass'],
+    ['DI106', '0', 'Pass', '1', 'Pass'],
+    ['DI107', '1', 'Fail', '1', 'Pass'],
+    ['DI108', '0', 'Pass', '1', 'Pass'],
+    ['DI109', '1', 'Fail', '1', 'Pass'],
+    ['DI110', '0', 'Pass', '1', 'Pass'],
+    ['DI111', '1', 'Fail', '1', 'Pass'],
+    ['DI112', '0', 'Pass', '1', 'Pass'],
+    ['DI113', '1', 'Fail', '1', 'Pass'],
+    ['DI114', '0', 'Pass', '1', 'Pass'],
+    ['DI115', '1', 'Fail', '1', 'Pass'],
+    ['DI116', '0', 'Pass', '1', 'Pass'],
+    ['DI117', '1', 'Pass', '1', 'Pass'],
+    ['DI118', '0', 'Fail', '1', 'Pass'],
+    ['DI119', '1', 'Pass', '1', 'Pass'],
+    ['DI120', '0', 'Pass', '1', 'Pass'],
+    ['DI121', '1', 'Fail', '1', 'Pass'],
+    ['DI122', '1', 'Pass', '1', 'Pass'],
+    ['DI123', '0', 'Fail', '1', 'Pass'],
+    ['DI124', '1', 'Pass', '1', 'Pass'],
+    ['DI125', '0', 'Fail', '1', 'Pass'],
+    ['DI126', '1', 'Fail', '1', 'Pass'],
+    ['DI127', '0', 'Pass', '1', 'Pass'],
+    ['DI128', '1', 'Fail', '1', 'Pass'],
+    ['DI129', '0', 'Pass', '1', 'Pass'],
+    ['DI130', '1', 'Pass', '1', 'Pass'],
+    ['DI131', '0', 'Fail', '1', 'Pass'],
+    ['DI132', '1', 'Pass', '1', 'Pass'],
+    ['DI133', '0', 'Fail', '1', 'Pass'],
+    ['DI134', '1', 'Fail', '1', 'Pass'],
+    ['DI135', '0', 'Pass', '1', 'Pass'],
+    ['DI136', '1', 'Pass', '1', 'Pass'],
+    ['DI137', '0', 'Fail', '1', 'Pass'],
+    ['DI138', '1', 'Pass', '1', 'Pass'],
+    ['DI139', '1', 'Fail', '1', 'Pass'],
+    ['DI140', '0', 'Pass', '1', 'Pass'],
+    ['DI141', '1', 'Fail', '1', 'Pass'],
+    ['DI142', '0', 'Pass', '1', 'Pass'],
+    ['DI143', '1', 'Fail', '1', 'Pass'],
+    ['DI144', '0', 'Pass', '1', 'Pass'],
+    ['DI145', '1', 'Pass', '1', 'Pass'],
+    ['DI146', '0', 'Fail', '1', 'Pass'],
+    ['DI147', '1', 'Fail', '1', 'Pass'],
+    ['DI148', '0', 'Pass', '1', 'Pass'],
+    ['DI149', '1', 'Pass', '1', 'Pass'],
+    ['DI150', '0', 'Fail', '1', 'Pass'],
+    ['DI151', '1', 'Pass', '1', 'Pass'],
+    ['DI152', '1', 'Fail', '1', 'Pass'],
+    ['DI153', '0', 'Pass', '1', 'Pass'],
+    ['DI154', '1', 'Fail', '1', 'Pass'],
+    ['DI155', '1', 'Pass', '1', 'Pass'],
+    ['DI156', '0', 'Fail', '1', 'Pass'],
+    ['DI157', '0', 'Pass', '1', 'Pass'],
+    ['DI158', '1', 'Fail', '1', 'Pass'],
+    ['DI159', '0', 'Pass', '1', 'Pass'],
+    ['DI160', '1', 'Pass', '1', 'Pass'],
+    ['DI161', '0', 'Fail', '1', 'Pass'],
+    ['DI162', '1', 'Fail', '1', 'Pass'],
+    ['DI163', '0', 'Pass', '1', 'Pass'],
+    ['DI164', '1', 'Pass', '1', 'Pass'],
+    ['DI165', '0', 'Fail', '1', 'Pass'],
+    ['DI166', '1', 'Pass', '1', 'Pass'],
+    ['DI167', '0', 'Fail', '1', 'Pass'],
+    ['DI168', '1', 'Pass', '1', 'Pass'],
+    ['DI169', '0', 'Pass', '1', 'Pass'],
+    ['DI170', '1', 'Fail', '1', 'Pass'],
+    ['DI171', '0', 'Pass', '1', 'Pass'],
+    ['DI172', '1', 'Fail', '1', 'Pass'],
+    ['DI173', '0', 'Pass', '1', 'Pass'],
+    ['DI174', '1', 'Fail', '1', 'Pass'],
+    ['DI175', '0', 'Pass', '1', 'Pass'],
+    ['DI176', '1', 'Fail', '1', 'Pass'],
+    ['DI177', '0', 'Pass', '1', 'Pass'],
+    ['DI178', '1', 'Fail', '1', 'Pass'],
+    ['DI179', '0', 'Pass', '1', 'Pass'],
+    ['DI180', '1', 'Fail', '1', 'Pass'],
+    ['DI181', '0', 'Pass', '1', 'Pass'],
+    ['DI182', '1', 'Pass', '1', 'Pass'],
+    ['DI183', '0', 'Fail', '1', 'Pass'],
+    ['DI184', '1', 'Pass', '1', 'Pass'],
+    ['DI185', '0', 'Fail', '1', 'Pass'],
+    ['DI186', '1', 'Pass', '1', 'Pass'],
+    ['DI187', '0', 'Fail', '1', 'Pass'],
+    ['DI188', '1', 'Pass', '1', 'Pass'],
+    ['DI189', '0', 'Pass', '1', 'Pass'],
+    ['DI190', '1', 'Fail', '1', 'Pass'],
+    ['DI191', '0', 'Pass', '1', 'Pass'],
+    ['DI192', '1', 'Fail', '1', 'Pass'],
+    ['DI193', '0', 'Pass', '1', 'Pass'],
+    ['DI194', '1', 'Pass', '1', 'Pass'],
+    ['DI195', '0', 'Fail', '1', 'Pass'],
+    ['DI196', '1', 'Fail', '1', 'Pass'],
+    ['DI197', '0', 'Pass', '1', 'Pass'],
+    ['DI198', '1', 'Pass', '1', 'Pass'],
+    ['DI199', '0', 'Fail', '1', 'Pass'],
+    ['DI200', '1', 'Pass', '1', 'Pass'],
+    ['DI201', '0', 'Fail', '1', 'Pass'],
+    ['DI202', '1', 'Pass', '1', 'Pass'],
+    ['DI203', '0', 'Pass', '1', 'Pass'],
+    ['DI204', '1', 'Fail', '1', 'Pass']
+        ],
+        theme: 'grid',
+        headStyles: { fillColor: [220, 220, 220] },
+        didDrawPage: function (data) {
+          const footerText = "Approved By: Ahmed Khan       Tester Name1: Naveen Kumar       Tester Name2: Sabeel Sab";
+          const pageStr = "Page " + doc.internal.getCurrentPageInfo().pageNumber;
+          doc.setFontSize(10);
+          doc.text(footerText, 14, pageHeight - 10);
+          doc.text(pageStr, pageWidth - 25, pageHeight - 10);
+        }
+      });
+
+      doc.save("Test_Jig_Report.pdf");
+    }
+  </script>
+</body>
+</html>
